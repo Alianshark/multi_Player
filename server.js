@@ -9,21 +9,13 @@ function connectionTimer() {
     }
   });
 
-
 }
 wss.on('connection', function connection(client) {
     console.log('client connected');
-    //console.log(wss.clients, 'wss clients');
     
     client.on('error', console.error);
     client.on('message', function message(data) {
         let player = JSON.parse(data)
         client.player = player
-        console.log('received: %s' , player.x )
-        console.log('received: %s', data);
   });
-
-
-  client.send('something new');
-
 });

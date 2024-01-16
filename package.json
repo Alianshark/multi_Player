@@ -1,16 +1,17 @@
 {
-  "type":"module",
+  "type": "module",
   "name": "multiplayer",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "nodemon server.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "nodemon": "^3.0.2",
     "ws": "^8.16.0"
   }
 }
