@@ -5,10 +5,14 @@ socket.onopen = function(e) {
     //document.body.innerHTML += "[open] З’єднання встановлено"
     // alert("Відправка на сервер");
    // document.body.innerHTML += "Відправка на сервер"
-    socket.send("Мене звати Джон");
+   
+    socket.send(JSON.stringify(player));
+   
   };
   
-  socket.onmessage = function(event) {
+  socket.onmessage = function(client) {
+     let anotherPlayer = JSON.parse(client.data)
+      console.log('text', JSON.parse(client.data))
     //document.body.innerHTML += `<div>${event.data}</div>`
     //alert(`[message] Дані отримані із сервера: ${event.data}`);
   };
@@ -26,18 +30,23 @@ socket.onopen = function(e) {
   socket.onerror = function(error) {
     alert(`[error]`);
   };
+  
 let img = document.createElement('img')
-let x = 50 
-let y = 50
 img.src = '/vintage-robot-toy-white-background_1308-77501.avif'
 img.style.position = 'absolute'
 img.style.left = 200 + 'px'
 document.body.append(img)
 
+let player = {
+    x: 50,
+    y: 50,
+}
+ 
+
 
 function position() {
-    img.style.left = x + 'px'
-    img.style.top = y + 'px'
+    img.style.left = player.x + 'px'
+    img.style.top = player.y + 'px'
 }
 
 function keyboardMoving() {
@@ -53,32 +62,35 @@ function leftMove(event) {
     
     if (event.key == 'ArrowLeft') {
         console.log('ArrowLeft Pressed')
-        x -= 10
+        player.x -= 10
+        socket.send(JSON.stringify(player));
     }
 }
 function rightMove(event) {
     if (event.key == 'ArrowRight') {
         console.log('ArrowRight Pressed')
-        x += 10
+        player.x += 10
+        socket.send(JSON.stringify(player));
     }
 }
 function upMove(event) {
     
     if (event.key == 'ArrowUp') {
         console.log('ArrowUp Pressed')
-        y -= 10
+        player.y -= 10
+        socket.send(JSON.stringify(player));
     }
 }
 function downMove(event) {
     if (event.key == 'ArrowDown') {
         console.log('Arrowdown Pressed')
-        y += 10
+        player.y += 10
+        socket.send(JSON.stringify(player));
     }
 }
-setInterval(imgStep,10)     
+setInterval( imgStep,10 )     
 
 function imgStep () {
     console.log('what?')
     position()
-    
 }
