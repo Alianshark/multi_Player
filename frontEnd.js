@@ -1,35 +1,26 @@
 let socket = new WebSocket("ws://localhost:8080");
-
+let players = []
 
 socket.onopen = function(e) {
-  socket.send(JSON.stringify(player));
-  };
+    socket.send(JSON.stringify(player));
+};
   
-  socket.onmessage = function(client) {
-     let anotherPlayer = JSON.parse(client.data)
-      console.log('text', JSON.parse(client.data))
-  };
-
-  socket.onerror = function(error) {
-    alert(`[error]`);
-  };
-  
-let img = document.createElement('img')
-img.src = '/vintage-robot-toy-white-background_1308-77501.avif'
-img.style.position = 'absolute'
-img.style.left = 200 + 'px'
-document.body.append(img)
+socket.onmessage = function(client) {
+    document.body.innerHTML = ""
+    let updatedPlayers = JSON.parse(client.data)
+    updatedPlayers.forEach((newPlayer) => {
+        let img = document.createElement('img')
+        img.src = '/vintage-robot-toy-white-background_1308-77501.avif'
+        img.style.position = 'absolute'
+        img.style.left = newPlayer.x + 'px'
+        img.style.top = newPlayer.y + 'px'
+        document.body.append(img)
+    });    
+}
 
 let player = {
     x: 50,
     y: 50,
-}
- 
-
-
-function position() {
-    img.style.left = player.x + 'px'
-    img.style.top = player.y + 'px'
 }
 
 function keyboardMoving() {
@@ -37,23 +28,24 @@ function keyboardMoving() {
  addEventListener('keydown', rightMove)
  addEventListener('keydown', upMove)
  addEventListener('keydown', downMove)
-
 }
+
 keyboardMoving()
 
 function leftMove(event) {
-    
     if (event.key == 'ArrowLeft') {
         player.x -= 10
         socket.send(JSON.stringify(player));
     }
 }
+
 function rightMove(event) {
     if (event.key == 'ArrowRight') {
         player.x += 10
         socket.send(JSON.stringify(player));
     }
 }
+
 function upMove(event) {
     
     if (event.key == 'ArrowUp') {
@@ -61,14 +53,10 @@ function upMove(event) {
         socket.send(JSON.stringify(player));
     }
 }
+
 function downMove(event) {
     if (event.key == 'ArrowDown') {
         player.y += 10
         socket.send(JSON.stringify(player));
     }
-}
-setInterval( imgStep,10 )     
-
-function imgStep () {
-    position()
 }
